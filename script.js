@@ -1,5 +1,5 @@
 /* ====================================================
-   SINCHANA N — PORTFOLIO SCRIPT
+   SINCHANA N — PORTFOLIO SCRIPT (Original Design)
    ==================================================== */
 
 // ===== LOADER =====
@@ -12,7 +12,7 @@
       document.body.classList.remove('is-loading');
       initReveal();
       initTyping();
-    }, 1800);
+    }, 1200);
   });
 })();
 
@@ -20,7 +20,6 @@
 const html = document.documentElement;
 const themeBtn = document.getElementById('theme-toggle');
 
-// Apply saved theme
 const savedTheme = localStorage.getItem('sn-theme') || 'dark';
 html.setAttribute('data-theme', savedTheme);
 
@@ -28,7 +27,6 @@ themeBtn?.addEventListener('click', () => {
   const next = html.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
   html.setAttribute('data-theme', next);
   localStorage.setItem('sn-theme', next);
-  // Tiny bounce
   themeBtn.style.transform = 'scale(0.88)';
   setTimeout(() => { themeBtn.style.transform = ''; }, 160);
 });
@@ -44,12 +42,10 @@ hamburger?.addEventListener('click', () => {
   hamburger.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
 });
 
-// Close on link click
 document.querySelectorAll('.nav-link').forEach(link => {
   link.addEventListener('click', closeMenu);
 });
 
-// Close on outside click
 document.addEventListener('click', e => {
   if (navLinks && hamburger &&
       !navLinks.contains(e.target) &&
@@ -62,7 +58,6 @@ function closeMenu() {
   navLinks?.classList.remove('open');
   hamburger?.classList.remove('is-open');
   hamburger?.setAttribute('aria-expanded', 'false');
-  hamburger?.setAttribute('aria-label', 'Open menu');
 }
 
 // ===== NAVBAR SCROLL =====
@@ -72,11 +67,10 @@ window.addEventListener('scroll', () => {
   highlightActiveNav();
 }, { passive: true });
 
-// ===== ACTIVE NAV LINK =====
 function highlightActiveNav() {
   const sections = document.querySelectorAll('section[id]');
   const offset   = window.scrollY + 130;
-  let activeId   = null;
+  let activeId   = 'hero';
 
   sections.forEach(sec => {
     if (offset >= sec.offsetTop && offset < sec.offsetTop + sec.offsetHeight) {
@@ -93,7 +87,7 @@ function highlightActiveNav() {
 // ===== SMOOTH SCROLLING =====
 document.querySelectorAll('a[href^="#"]').forEach(anchor => {
   anchor.addEventListener('click', e => {
-    const href   = anchor.getAttribute('href');
+    const href = anchor.getAttribute('href');
     if (!href || href === '#') return;
     const target = document.querySelector(href);
     if (!target) return;
@@ -125,12 +119,10 @@ function initTyping() {
   if (!el) return;
 
   const phrases = [
-    'Computer Science & Engineering Student',
-    'Learning to Code ✨',
-    'Building One Project at a Time 🚀',
-    'CSE Student @ REVA University',
-    'Explorer of Technology 🌱',
-    'Learning. Building. Becoming.'
+    '3rd Semester B.Tech CSE Student',
+    'Learning C & Python',
+    'Building Fundamentals Step by Step',
+    'Explorer of Computer Science'
   ];
 
   let pi = 0, ci = 0, deleting = false, delay = 75;
@@ -140,7 +132,7 @@ function initTyping() {
     if (!deleting) {
       el.textContent = phrase.slice(0, ci + 1);
       ci++;
-      delay = ci === phrase.length ? 2400 : 72;
+      delay = ci === phrase.length ? 2200 : 70;
       if (ci === phrase.length) deleting = true;
     } else {
       el.textContent = phrase.slice(0, ci - 1);
@@ -162,9 +154,9 @@ function initTyping() {
   const canvas = document.getElementById('particles-canvas');
   if (!canvas) return;
   const ctx = canvas.getContext('2d');
-  const PARTICLE_COUNT = 75;
-  const CONNECT_DIST   = 125;
-  let   particles = [];
+  const PARTICLE_COUNT = 70;
+  const CONNECT_DIST   = 120;
+  let particles = [];
 
   function resize() {
     canvas.width  = window.innerWidth;
@@ -173,7 +165,7 @@ function initTyping() {
   window.addEventListener('resize', resize, { passive: true });
   resize();
 
-  class P {
+  class Particle {
     constructor() { this.reset(true); }
     reset(init = false) {
       this.x  = Math.random() * canvas.width;
@@ -202,7 +194,7 @@ function initTyping() {
     }
   }
 
-  for (let i = 0; i < PARTICLE_COUNT; i++) particles.push(new P());
+  for (let i = 0; i < PARTICLE_COUNT; i++) particles.push(new Particle());
 
   function drawLines() {
     const light = html.getAttribute('data-theme') === 'light';
@@ -241,7 +233,6 @@ const submitBtn  = document.getElementById('contact-submit');
 form?.addEventListener('submit', e => {
   e.preventDefault();
 
-  // Basic client-side validation
   const name  = document.getElementById('contact-name')?.value.trim();
   const email = document.getElementById('contact-email')?.value.trim();
   const msg   = document.getElementById('contact-message')?.value.trim();
@@ -250,33 +241,11 @@ form?.addEventListener('submit', e => {
   submitBtn.disabled    = true;
   submitBtn.textContent = 'Sending…';
 
-  // Simulate async submission
   setTimeout(() => {
     if (formMsg) formMsg.hidden = false;
     form.reset();
     submitBtn.disabled = false;
     submitBtn.innerHTML = `Send Message <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><path d="M22 2L11 13"/><path d="M22 2L15 22 11 13 2 9l20-7z"/></svg>`;
-    setTimeout(() => { if (formMsg) formMsg.hidden = true; }, 5000);
-  }, 1400);
+    setTimeout(() => { if (formMsg) formMsg.hidden = true; }, 4000);
+  }, 1200);
 });
-
-// ===== CYCLE STEP HOVER (accessibility: keyboard) =====
-document.querySelectorAll('.cycle-step').forEach(step => {
-  step.setAttribute('tabindex', '0');
-  step.addEventListener('focus', () => { step.style.transform = 'translateY(-7px)'; });
-  step.addEventListener('blur',  () => { step.style.transform = ''; });
-});
-
-// ===== TIMELINE ICON GLOW ON SCROLL =====
-(function tlObserver() {
-  const icons = document.querySelectorAll('.tl-icon');
-  const obs = new IntersectionObserver(entries => {
-    entries.forEach(e => {
-      if (e.isIntersecting) {
-        e.target.style.borderColor = 'var(--blue)';
-        e.target.style.boxShadow   = '0 0 22px rgba(91,141,238,0.28)';
-      }
-    });
-  }, { threshold: 0.8 });
-  icons.forEach(icon => obs.observe(icon));
-})();
